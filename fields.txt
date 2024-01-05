@@ -1,0 +1,11 @@
+api key - string
+cv link - string
+skills:
+    abbrev - string,
+    name - string,
+    description - string
+project:
+    title - string,
+    display_image - image file,
+    link - string (URL)
+    description - string,

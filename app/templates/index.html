@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {%load static%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio Site Admin</title>
+    <link rel="stylesheet" href="{%static 'css/bulma-0.9.0/css/bulma.min.css' %}">
+    <link rel="stylesheet" href="{%static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <div class="inner-header">
+            <span class="dmserif grey-text">Portfolio Admin</span>
+            <a href="https://francis-65e0.onrender.com/" class="karla">Visit Portfolio site.</a>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {%csrf_token%}
+                {{form}}
+                <input type="submit" class="button is-info is-outlined" value="UPDATE">
+            </form>
+        </div>
+    </main>
+    <br>
+    <footer>
+        <!-- <div class="divider"></div> -->
+        <div class="subfooter">
+            <div class="contaniner">
+                <h4 class="Karla">Francis.</h4>
+                <ul>
+                    <li><a href="https://github.com/francisA88">Github</a></li>
+                    <li><a href="https://www.linkedin.com/in/francis-ali-b95880190/">LinkedIn</a></li>
+                    <li><a href="https://twitter.com/IlaSicnarf">X (Twitter)</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
