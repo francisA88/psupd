@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="{%static 'css/style.css' %}">
 </head>
 <body>
+    {% for error in errors %}
+    <div class="notification is-danger is-light">
+        <button class="delete"></button>
+        {{ error }}
+    </div>
+    {% endfor %}
     <header>
         <div class="inner-header">
             <span class="dmserif grey-text">Portfolio Admin</span>
@@ -18,8 +24,8 @@
     <main>
         <div class="container">
             <form action="" method="POST" enctype="multipart/form-data">
-                {%csrf_token%}
-                {{form}}
+                {% csrf_token %}
+                {{ form }}
                 <input type="submit" class="button is-info is-outlined" value="UPDATE">
             </form>
         </div>

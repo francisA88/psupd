@@ -1,13 +1,16 @@
-from django.shortcuts import render
-import requests
+import base64
 
+from django.shortcuts import render
 
 from .forms import UpdateForm
+from .db_operations import *
+
 
 def is_valid_str(string) -> bool:
     if string == None: return False
     return string.replace(' ', '')
-def are_valid_strs(*strings):
+
+def are_valid_strs(*strings) -> bool:
     return all(map(is_valid_str, strings))
 
 
@@ -15,7 +18,7 @@ def index(request):
     form = UpdateForm()
     context = {
         'form': form,
-        'error': None
+        'errors': []
     }
     if request.method == 'POST':
         data = request.POST
@@ -33,38 +36,24 @@ def index(request):
         project_link = data.get('project_link')
         project_description = data.get('project_description')
 
-        print(description)
-        print(project_description)
-        print(project_display_image, dir(project_display_image))
+        if match_api_key(api_key):
+            if are_valid_strs(cv_link):
+                cv_update_successful = update_cv_link(cv_link)
+                if not cv_update_successful:
+                    context['errors'].append('Error updating CV link')
+            
+            if are_valid_strs(skill_abbr, skill_name, description):
+                skill_update_successful = add_skill(skill_abbr, skill_name, description)
+                if not skill_update_successful:
+                    context['errors'].append('Error updating skills')
+            
+            if are_valid_strs(project_title, project_description, project_link) and project_display_image:
+                b64_image = base64.b64encode(project_display_image.read())
+                projects_update_successful = add_project(project_title, b64_image, project_link, project_description)
+                if not projects_update_successful:
+                    context['errors'].append('Error updating projects')
 
-        PF_SITE = 'https://francis-65e0.onrender.com'
-        if are_valid_strs(cv_link):
-            response = requests.post(PF_SITE+'/update/cv', data={
-                'key': api_key,
-                'link': cv_link
-            })
-            if response.status_code == 401:
-                context['error'] = 'Error: API Key Mismatch'
-                
-        if are_valid_strs(skill_abbr, skill_name, description):
-            response = requests.post(PF_SITE+'/update/skill', data={
-                'key': api_key,
-                'skill_name': skill_name,
-                'abbr': skill_abbr,
-                'description': description
-            })
-            if response.status_code == 401:
-                context['error'] = 'Error: API Key Mismatch'
-
-        if are_valid_strs(project_title, project_link, project_description) and project_display_image:
-            response = requests.post(PF_SITE+'/update/project', data={
-                'key': api_key,
-                'project_name': project_title,
-                'project_description': project_description,
-                'image': project_display_image,
-                'link': project_link
-            })
-            if response.status_code == 401:
-                context['error'] = 'Error: API Key Mismatch'
+        else:
+            context['errors'].append('Invalid API key.')
     
     return render(request, 'index.html', context)
