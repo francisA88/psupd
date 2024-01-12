@@ -12,5 +12,5 @@ class UpdateForm(forms.Form):
     project_title = forms.CharField(max_length=15, required=False)
     project_display_image = forms.ImageField(required=False)
     project_link = forms.URLField(max_length=60, required=False)
-    project_description = forms.CharField(max_length=110, 
+    project_description = forms.CharField(max_length=220, 
                                           widget=forms.Textarea(), required=False)
