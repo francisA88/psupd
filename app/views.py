@@ -48,7 +48,7 @@ def index(request):
                     context['errors'].append('Error updating skills')
             
             if are_valid_strs(project_title, project_description, project_link) and project_display_image:
-                b64_image = base64.b64encode(project_display_image.read())
+                b64_image = base64.b64encode(project_display_image.read()).decode()
                 projects_update_successful = add_project(project_title, b64_image, project_link, project_description)
                 if not projects_update_successful:
                     context['errors'].append('Error updating projects')
